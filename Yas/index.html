@@ -1,0 +1,446 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Convite Especial para Yasmin ❤️</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap');
+        
+        body { 
+            margin: 0; 
+            padding: 0; 
+            font-family: 'Poppins', sans-serif; 
+            background: linear-gradient(-45deg, #ffb3b3, #ffe6e6, #ffcccc, #ff9999);
+            background-size: 400% 400%;
+            animation: gradientBG 15s ease infinite;
+            display: flex; 
+            justify-content: center; 
+            align-items: center; 
+            min-height: 100vh; 
+            text-align: center; 
+            color: #333; 
+            overflow: hidden; 
+            touch-action: manipulation; /* Evita zoom acidental no celular duplo clique */
+        }
+
+        @keyframes gradientBG {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        /* TELA DE ABERTURA - ENVELOPE */
+        .envelope-wrapper {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background: #ffe6e6; 
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            z-index: 9999;
+            transition: opacity 1s ease;
+        }
+
+        .envelope {
+            position: relative;
+            width: 300px;
+            height: 200px;
+            background: #b30000; 
+            cursor: pointer;
+            box-shadow: 0 15px 30px rgba(0,0,0,0.2);
+            transition: transform 0.3s;
+        }
+
+        .envelope:hover { transform: translateY(-5px); }
+
+        .envelope::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0;
+            border-top: 100px solid transparent;
+            border-bottom: 100px solid transparent;
+            border-left: 150px solid #ff6666;
+            z-index: 3;
+        }
+        .envelope::after {
+            content: '';
+            position: absolute;
+            top: 0; right: 0;
+            border-top: 100px solid transparent;
+            border-bottom: 100px solid transparent;
+            border-right: 150px solid #ff6666;
+            z-index: 3;
+        }
+
+        .bottom-flap {
+            position: absolute;
+            bottom: 0; left: 0;
+            border-left: 150px solid transparent;
+            border-right: 150px solid transparent;
+            border-bottom: 110px solid #ff4d4d;
+            z-index: 4;
+        }
+
+        .top-flap {
+            position: absolute;
+            top: 0; left: 0;
+            border-left: 150px solid transparent;
+            border-right: 150px solid transparent;
+            border-top: 110px solid #ff3333;
+            z-index: 5;
+            transform-origin: top;
+            transition: transform 0.6s, z-index 0.2s;
+        }
+
+        .letter {
+            position: absolute;
+            bottom: 0; left: 10px;
+            width: 280px; height: 180px;
+            background: white;
+            z-index: 2;
+            transition: transform 0.6s 0.3s; 
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            border-radius: 8px 8px 0 0;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+
+        .letter h2 { margin: 0; color: #ff4d4d; font-size: 1.5rem; }
+
+        .envelope.open .top-flap { transform: rotateX(180deg); z-index: 1; }
+        .envelope.open .letter { transform: translateY(-80px); }
+
+        .hint {
+            margin-top: 40px;
+            font-size: 1.2rem;
+            color: #ff4d4d;
+            font-weight: 600;
+            animation: pulse 1.5s infinite;
+            padding: 0 20px;
+        }
+
+        /* ESTILOS DO CONVITE */
+        .container { 
+            background: rgba(255, 255, 255, 0.95); 
+            padding: 30px 20px; 
+            border-radius: 20px; 
+            box-shadow: 0 10px 30px rgba(255, 77, 77, 0.2); 
+            width: 90%; 
+            max-width: 400px; 
+            z-index: 10; 
+            position: relative;
+            backdrop-filter: blur(10px);
+            opacity: 0; 
+            transition: opacity 1s ease;
+            box-sizing: border-box;
+        }
+
+        .step-img {
+            max-width: 130px;
+            margin-bottom: 10px;
+            border-radius: 15px;
+        }
+
+        h1 { 
+            color: #ff4d4d; 
+            font-size: 1.5rem; 
+            margin-bottom: 15px; 
+            margin-top: 0;
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.1);
+        }
+
+        .step { display: none; animation: popIn 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275); }
+        .step.active { display: block; }
+        
+        .btn-grid { 
+            display: grid; 
+            grid-template-columns: 1fr 1fr; 
+            gap: 15px; 
+            margin-top: 15px; 
+        }
+
+        .btn-grid button {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            height: 110px; 
+            padding: 10px;
+            gap: 8px; 
+        }
+
+        .btn-grid button .emoji { font-size: 2.2rem; }
+
+        .btn-full {
+            grid-column: span 2; 
+            height: 70px !important;
+            flex-direction: row !important; 
+        }
+        .btn-full .emoji { font-size: 1.5rem !important; }
+        
+        .btn-row { display: flex; justify-content: center; gap: 15px; margin-top: 20px; }
+        
+        button { 
+            padding: 14px 20px; 
+            border: none; 
+            border-radius: 12px; 
+            background: linear-gradient(135deg, #ff4d4d, #ff1a1a); 
+            color: white; 
+            font-size: 1rem; 
+            font-weight: 600;
+            cursor: pointer; 
+            transition: all 0.3s ease; 
+            box-shadow: 0 4px 15px rgba(255, 77, 77, 0.3);
+            font-family: 'Poppins', sans-serif;
+            -webkit-tap-highlight-color: transparent; /* Tira o brilho azul no celular */
+        }
+        
+        button:hover { 
+            transform: translateY(-3px) scale(1.05); 
+            box-shadow: 0 6px 20px rgba(255, 77, 77, 0.5);
+        }
+
+        input[type="date"] { 
+            padding: 12px; 
+            font-size: 1.1rem; 
+            border: 2px solid #ff9999; 
+            border-radius: 10px; 
+            margin: 20px 0; 
+            width: 100%; 
+            box-sizing: border-box;
+            outline: none;
+            color: #555;
+            transition: border-color 0.3s;
+            font-family: inherit;
+        }
+
+        input[type="date"]:focus { border-color: #ff4d4d; }
+
+        #btn-nao { position: relative; background: #999; box-shadow: none; z-index: 20; }
+        
+        .loading { display: none; margin-top: 15px; font-weight: bold; color: #ff4d4d; animation: pulse 1.5s infinite; }
+
+        @keyframes popIn { 
+            from { opacity: 0; transform: scale(0.8); } 
+            to { opacity: 1; transform: scale(1); } 
+        }
+
+        @keyframes pulse { 0% { opacity: 0.6; } 50% { opacity: 1; } 100% { opacity: 0.6; } }
+
+        .heart-bg {
+            position: absolute;
+            bottom: -20px;
+            font-size: 24px;
+            z-index: 1;
+            animation: floatUp linear forwards;
+            opacity: 0.7;
+        }
+
+        @keyframes floatUp {
+            0% { transform: translateY(0) scale(1) rotate(0deg); opacity: 0.7; }
+            100% { transform: translateY(-120vh) scale(1.5) rotate(360deg); opacity: 0; }
+        }
+
+        /* 📱 ADAPTAÇÃO PARA CELULARES (RESPONSIVIDADE) */
+        @media (max-width: 480px) {
+            .envelope {
+                transform: scale(0.9); /* Diminui o envelope um pouco */
+            }
+            .container {
+                padding: 25px 15px; /* Diminui as bordas internas pra caber mais conteúdo */
+            }
+            h1 {
+                font-size: 1.3rem; /* Título um pouco menor */
+            }
+            .btn-grid {
+                gap: 10px; /* Menos espaço entre os botões */
+            }
+            .btn-grid button {
+                height: 95px;
+                font-size: 0.9rem; /* Letra do botão menor */
+            }
+            .btn-grid button .emoji {
+                font-size: 1.8rem; /* Emoji menor */
+            }
+            .step-img {
+                max-width: 110px; /* GIFs um pouco menores */
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- ENVELOPE -->
+    <div class="envelope-wrapper" id="envelope-screen">
+        <div class="envelope" onclick="abrirEnvelope()">
+            <div class="top-flap"></div>
+            <div class="letter">
+                <h2>Para Yasmin</h2>
+                <p style="font-size: 2rem; margin: 5px;">❤️</p>
+            </div>
+            <div class="bottom-flap"></div>
+        </div>
+        <div class="hint">Toque na carta para abrir 💌</div>
+    </div>
+
+    <!-- CONVITE -->
+    <div class="container" id="convite-container">
+        
+        <div id="step-1" class="step active">
+            <!-- 1. Gatinho fofo esfregando as patas -->
+            <img src="https://media.giphy.com/media/vFKqnCdLPNOKc/giphy.gif" alt="Gatinho fofo" class="step-img">
+            <h1>Yasmin, quer sair comigo? ❤️</h1>
+            <p style="color: #666; font-size: 0.9rem;">Tenho uma surpresa pra você...</p>
+            <div class="btn-row">
+                <button onclick="nextStep(2)" style="width: 120px;">Sim!</button>
+                <!-- BOTÃO NÃO - Adaptado para o touch do celular não deixar ela clicar -->
+                <button id="btn-nao" onmouseover="fuja()" ontouchstart="fuja()" style="width: 120px;">Não</button>
+            </div>
+        </div>
+
+        <div id="step-2" class="step">
+            <!-- 2. Gatinho deslizando na caixa -->
+            <img src="OBPOFX7XCFDO5KPQ56UH7X723Y.jpg" alt="Gatinho passeando" class="step-img">
+            <h1>Onde vamos? 📍</h1>
+            <div class="btn-grid">
+                <button onclick="salvarEscolha('lugar', 'Cinema', 3)"><span class="emoji">🍿</span>Cinema</button>
+                <button onclick="salvarEscolha('lugar', 'Parque', 3)"><span class="emoji">🌳</span>Parque</button>
+                <button onclick="salvarEscolha('lugar', 'Cafeteria', 3)"><span class="emoji">☕</span>Cafeteria</button>
+                <button onclick="salvarEscolha('lugar', 'Surpresa', 3)"><span class="emoji">🎲</span>Surpresa</button>
+            </div>
+        </div>
+
+        <div id="step-3" class="step">
+            <!-- 3. Gatinho gordinho comendo pizza -->
+            <img src="jimin-jungkook.jpg" alt="Gatinho comendo" class="step-img">
+            <h1>O que vamos comer? 🤤</h1>
+            <div class="btn-grid">
+                <button onclick="salvarEscolha('comida', 'Hamburguer', 4)"><span class="emoji">🍔</span>Hambúrguer</button>
+                <button onclick="salvarEscolha('comida', 'Sushi', 4)"><span class="emoji">🍣</span>Sushi</button>
+                <button onclick="salvarEscolha('comida', 'Churrasco', 4)"><span class="emoji">🥩</span>Churrasco</button>
+                <button onclick="salvarEscolha('comida', 'Pizza/Massa', 4)"><span class="emoji">🍕</span>Massa</button>
+                <button class="btn-full" onclick="salvarEscolha('comida', 'O que der vontade no dia', 4)"><span class="emoji">🤷‍♀️</span>O que der vontade</button>
+            </div>
+        </div>
+
+        <div id="step-4" class="step">
+            <!-- 4. Gato digitando no computador -->
+            <img src="2cd28be9b4172548757e0d57259a8eb6.jpg" alt="Gatinho esperando" class="step-img">
+            <h1>Que dia? 📅</h1>
+            <input type="date" id="input-data"><br>
+            <button onclick="salvarData()" id="btn-enviar" style="width: 100%;">Confirmar Encontro! 🥰</button>
+            <p id="loading-text" class="loading">Salvando nossa data... 💌</p>
+        </div>
+
+        <div id="step-5" class="step">
+            <!-- 5. TONY STARK NO FINAL -->
+            <img src="homem-de-ferro.jpg" alt="Vitória!" class="step-img" style="max-width: 250px;">
+            <h1 style="font-size: 2rem; margin-top: 15px;">🎉 Encontro Confirmado!</h1>
+            <p>Sua resposta está muito bem guardada.</p>
+        </div>
+    </div>
+
+    <script>
+        let encontro = { lugar: '', comida: '', data: '' };
+
+        window.onload = function() {
+            const dataInput = document.getElementById('input-data');
+            const dataHoje = new Date();
+            dataHoje.setMinutes(dataHoje.getMinutes() - dataHoje.getTimezoneOffset());
+            dataInput.min = dataHoje.toISOString().split('T')[0];
+        };
+
+        function abrirEnvelope() {
+            const envelope = document.querySelector('.envelope');
+            const envelopeScreen = document.getElementById('envelope-screen');
+            const conviteContainer = document.getElementById('convite-container');
+
+            envelope.classList.add('open');
+
+            setTimeout(() => {
+                envelopeScreen.style.opacity = '0';
+                setTimeout(() => {
+                    envelopeScreen.style.display = 'none';
+                    conviteContainer.style.opacity = '1';
+                }, 1000); 
+            }, 1500); 
+        }
+
+        function criarCoracao() {
+            const coracao = document.createElement('div');
+            coracao.classList.add('heart-bg');
+            coracao.innerHTML = '❤️';
+            coracao.style.left = Math.random() * 100 + 'vw';
+            coracao.style.animationDuration = Math.random() * 3 + 4 + 's'; 
+            coracao.style.fontSize = (Math.random() * 15 + 10) + 'px';
+            document.body.appendChild(coracao);
+            setTimeout(() => { coracao.remove(); }, 7000);
+        }
+        setInterval(criarCoracao, 300);
+
+        function nextStep(stepNumber) {
+            document.querySelectorAll('.step').forEach(el => el.classList.remove('active'));
+            document.getElementById('step-' + stepNumber).classList.add('active');
+        }
+
+        function fuja() {
+            const btn = document.getElementById('btn-nao');
+            // Garante que o botão fuja para dentro da tela (sem criar barra de rolagem)
+            const maxX = window.innerWidth - btn.clientWidth - 20; 
+            const maxY = window.innerHeight - btn.clientHeight - 20;
+            
+            btn.style.position = 'fixed';
+            btn.style.left = Math.max(10, Math.floor(Math.random() * maxX)) + 'px';
+            btn.style.top = Math.max(10, Math.floor(Math.random() * maxY)) + 'px';
+        }
+
+        function salvarEscolha(chave, valor, proximo) { 
+            encontro[chave] = valor; 
+            nextStep(proximo); 
+        }
+
+        async function salvarData() {
+            const val = document.getElementById('input-data').value;
+            if (!val) return alert("Por favor, escolha uma data para o nosso encontro! 😊");
+            const [ano, mes, dia] = val.split('-');
+            encontro.data = `${dia}/${mes}/${ano}`;
+
+            document.getElementById('btn-enviar').style.display = 'none';
+            document.getElementById('loading-text').style.display = 'block';
+
+            const SUPABASE_URL = "https://tljgsjkysabcdhmzqgbu.supabase.co"; 
+            const SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InRsamdzamt5c2FiY2RobXpxZ2J1Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODgyMDkxODgsImV4cCI6MjEwMzc4NTE4OH0.FIIENYdbD-XN9g3CJK-Cosx6C9HzfNXFUHXCMsUuSYE";
+
+            try {
+                const response = await fetch(`${SUPABASE_URL}/rest/v1/respostas`, {
+                    method: 'POST',
+                    headers: {
+                        'apikey': SUPABASE_ANON_KEY,
+                        'Authorization': `Bearer ${SUPABASE_ANON_KEY}`,
+                        'Content-Type': 'application/json',
+                        'Prefer': 'return=minimal'
+                    },
+                    body: JSON.stringify(encontro)
+                });
+
+                if (response.ok) {
+                    nextStep(5);
+                } else {
+                    throw new Error('Erro ao salvar');
+                }
+            } catch (error) {
+                alert("Poxa, deu um erro de conexão. Tenta de novo?");
+                document.getElementById('btn-enviar').style.display = 'inline-block';
+                document.getElementById('loading-text').style.display = 'none';
+            }
+        }
+    </script>
+</body>
+</html>
